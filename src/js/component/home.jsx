@@ -7,7 +7,7 @@ const Home = () => {
   const [tareas, setTareas] = useState([]);
 
   useEffect(() => {
-    fetch("https://playground.4geeks.com/tareas/user/alesanchezr", {
+    fetch("https://playground.4geeks.com/todo/docs", {
       method: "PUT",
       body: JSON.stringify(tareas),
       headers: {
