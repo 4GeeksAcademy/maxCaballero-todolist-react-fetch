@@ -7,31 +7,30 @@ const Home = () => {
   const [tareas, setTareas] = useState([]);
 
   useEffect(() => {
-    fetch("https://playground.4geeks.com/todo/docs", {
-      method: "PUT",
-      body: JSON.stringify(tareas),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((resp) => {
-        console.log(resp.ok); // Será true si la respuesta es exitosa
-        console.log(resp.status); // El código de estado 200, 300, 400, etc.
-        //console.log(resp.text()); // Intentará devolver el resultado exacto como string
-        return resp.text(); // Retornará una promesa donde puedes usar .then para seguir con la lógica
+    if (tareas.length > 0) {
+      fetch("https://playground.4geeks.com/todo/docs", {
+        method: "PUT",
+        body: JSON.stringify(tareas),
+        headers: {
+          "Content-Type": "application/json",
+        },
       })
-      .then((text) => {
-        console.log(text);
-        return JSON.parse(text);
-      })
-      .then((data) => {
-        // Aquí es donde debe comenzar tu código después de que finalice la búsqueda
-        console.log(data); // Esto imprimirá en la consola el objeto exacto recibido del servidor
-      })
-      .catch((error) => {
-        // Manejo de errores
-        console.log(error);
-      });
+        .then((resp) => {
+          if (!resp.ok) {
+            throw new Error("Error en la red");
+          }
+          return resp.json();
+        })
+
+        .then((data) => {
+          // Aquí es donde debe comenzar tu código después de que finalice la búsqueda
+          console.log(data); // Esto imprimirá en la consola el objeto exacto recibido del servidor
+        })
+        .catch((error) => {
+          // Manejo de errores
+          console.log(error);
+        });
+    }
   }, [tareas]);
 
   const handleKeyPress = (e) => {
